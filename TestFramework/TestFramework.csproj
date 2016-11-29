@@ -78,7 +78,6 @@
     <Compile Include="Pages\driver.cs" />
     <Compile Include="Pages\InfoPage.cs" />
     <Compile Include="Pages\MainPage.cs" />
-    <Compile Include="Pages\MyKinopoisk.cs" />
     <Compile Include="Pages\Navigator.cs" />
     <Compile Include="Pages\SearchPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

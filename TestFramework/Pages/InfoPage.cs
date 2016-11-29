@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TestFramework.Pages
@@ -14,155 +15,182 @@ namespace TestFramework.Pages
        
 
         [FindsBy(How = How.Id, Using = "btn_fav_film")]
-        private IWebElement heart;
+        private IWebElement addFilmToFavoriteButton;
+
         [FindsBy(How = How.XPath, Using = "//li[@id='ms_folder_745']/a")]
-        private IWebElement listName;
+        private IWebElement listNameLabel;
+
         [FindsBy(How = How.XPath, Using = "//a[text()='Любимые фильмы']")]
-        private IWebElement FilmlistName;
+        private IWebElement FavoritFilmlsListLabel;
+
         [FindsBy(How = How.XPath, Using = "//a[text()='все папки']")]
-        private IWebElement allFolders;
+        private IWebElement allFoldersLabel;
+
         [FindsBy(How = How.XPath, Using = "//div[@id='div_mustsee_main']//span[2]")]
         private IWebElement listButton;
+
         [FindsBy(How = How.XPath, Using = "//div[@id='div_mustsee_main']//dl/dd[5]")]
-        private IWebElement favButton;
+        private IWebElement addFavoriteButton;
+
         [FindsBy(How = How.ClassName, Using = "list_title")]
-        private IWebElement list_title;
+        private IWebElement listTitleLabel;
+
         [FindsBy(How = How.ClassName, Using = "s10")]
-        private IWebElement mark;
+        private IWebElement tenPointButton;
+
         [FindsBy(How = How.XPath, Using = "//a[text()='моя оценка']")]
-        private IWebElement myMark;
-        [FindsBy(How = How.XPath, Using = "//a[text()='Дерек Сиенфрэнс']")]
-        private IWebElement director;
-        [FindsBy(How = How.XPath, Using = "//a[text()='Валентинка']")]
-        private IWebElement anoherFilm;
+        private IWebElement myMarkLabel;
+
+        [FindsBy(How = How.XPath, Using = "//div[@id='infoTable']/table/tbody/tr[4]/td[2]/a")]
+        private IWebElement directorButton;
+
+        [FindsBy(How = How.XPath, Using = "//div[@id='BestFilmList']/h4")]
+        private IWebElement bestDirectorFilmsLabel;
+
         [FindsBy(How = How.ClassName, Using = "tdtext")]
-        private IWebElement message;
+        private IWebElement warningMessage;
+
         [FindsBy(How = How.Id, Using = "btn_film_notice")]
-        private IWebElement addNotice;
+        private IWebElement addNoticeButton;
+
         [FindsBy(How = How.XPath, Using = "//div[@id='ta_film_notice']/form/textarea")]
-        private IWebElement fillNotice;
+        private IWebElement textareaForNotice;
+
         [FindsBy(How = How.ClassName, Using = "save")]
-        private IWebElement saveNotice;
+        private IWebElement saveNoticeButton;
+
         [FindsBy(How = How.XPath, Using = "//div[@id='txt_film_notice']/div[1]")]
         private IWebElement noticeText;
+
         [FindsBy(How = How.ClassName, Using = "remove")]
-        private IWebElement removeNotice;
-        [FindsBy(How = How.XPath, Using = "//div[@id='infoTable']/table/tbody/tr[14]/td[2]/div/a[1]")]
-        private IWebElement feecInTheWorld;
-        [FindsBy(How = How.XPath, Using = "//td[@id='block_left']//td[1]/div//tr[3]/td[1]/h3")]
-        private IWebElement feecInUSA;
-        [FindsBy(How = How.XPath, Using = "//td[@id='block_left']//td[1]/div//tr[5]/td[1]/h3")]
-        private IWebElement feecInOtherCountries;
-        [FindsBy(How = How.XPath, Using = "//td[@id='block_left']//td[1]/x:div//tr[9]/td[1]/h3")]
-        private IWebElement feecSum;
+        private IWebElement removeNoticeButton;
+  
         [FindsBy(How = How.XPath, Using = "//div[@id='sort_block']/div[2]/span")]
-        private IWebElement sortByBtn;
-        [FindsBy(How = How.XPath, Using = "//div[@id='sort_block']/div[2]/div/ul/li[3]")]
-        private IWebElement sortByNameBtn;
+        private IWebElement sortByButton;
+
+        [FindsBy(How = How.XPath, Using = "//div[@id='sort_block']/div[2]/div/ul/li[6]")]
+        private IWebElement sortByMarkAmount;
+
         [FindsBy(How = How.XPath, Using = "//div[@id='sort_block']/div[2]/div/ul/li[7]")]
-        private IWebElement sortByMarkBtn;
-        [FindsBy(How = How.XPath, Using = "//tr[11]/td/div[2]/div[1]/table/tbody/tr/td/span[1]/a[1]")]
-        private IWebElement labeForChekSort;
+        private IWebElement sortByMarkButton;
+
+        [FindsBy(How = How.XPath, Using = "//tr[11]/td/div[2]/div[1]/div[1]/span")]
+        private IWebElement markAmountFirstElementLable;
+
+        [FindsBy(How = How.XPath, Using = "//tr[11]/td/div[2]/div[2]/div[1]/span")]
+        private IWebElement markAmountSecondElementLable;
+
+        [FindsBy(How = How.XPath, Using = "//tr[11]/td/div[2]/div[1]/div[1]/a")]
+        private IWebElement filmMarkFirstElementLable;
+
+        [FindsBy(How = How.XPath, Using = "//tr[11]/td/div[2]/div[2]/div[1]/a")]
+        private IWebElement filmMarkSecondElementLable;
 
 
 
 
 
-   /*     public InfoPage(IWebDriver driver)                              //конструктор
+        public bool IsFirstAmountElementMoreThenSecond()
         {
-            this.driver = driver;
-            PageFactory.InitElements(this.driver, this);
-        }*/
-        public string GetTextlabeForChekSort()
-        {
-           return labeForChekSort.Text;
+            
+          int a=Convert.ToInt32(markAmountFirstElementLable.Text);
+           int b= Convert.ToInt32(markAmountSecondElementLable.Text);
+           return a > b;
         }
 
-        public void ClickSortBtn()
+        public bool IsFirstMarkElementMoreThenSecond()
         {
-            sortByBtn.Click();
+
+            int a = Convert.ToInt32(filmMarkFirstElementLable.Text);
+            int b = Convert.ToInt32(filmMarkSecondElementLable.Text);
+            return a > b;
         }
 
-        public void ClickSortByNameBtn()
+     
+        public void ClickSortByMarkAmount()
         {
-            sortByNameBtn.Click();
+            sortByButton.Click();
+            sortByMarkAmount.Click();
+            Thread.Sleep(4000);
         }
 
         public void ClickSortByMarkBtn()
         {
-            sortByMarkBtn.Click();
+            sortByButton.Click();
+            sortByMarkButton.Click();
+            Thread.Sleep(4000);
         }
 
         public void ClickfavButton()
         {
-            favButton.Click();
+            addFavoriteButton.Click();
         }
-        public void ClickList()
+        public void ClickListButton()
         {
             listButton.Click();
         }
         public void ClickListTitle()
         {
-            list_title.Click();
+            listTitleLabel.Click();
         }
-        public void ClickHeart()
+        public void ClickAddFilmToFavoriteButton()
         {
-            heart.Click();
+            addFilmToFavoriteButton.Click();
             
         }
         public void ClickDirector()
         {
-            director.Click();
+            directorButton.Click();
 
         }
-        public string GetListName()                 //получить listname
+        public bool IsFavoriteStarsListExist()                 //получить listname
         {
-            return listName.Text;
+            return listNameLabel.Text.Contains("Любимые звёзды");
         }
-        public string GetFilmListName()                 //получить listname
+        public bool IsFavoriteFilmsListExist()                 //получить listname
         {
-            return FilmlistName.Text;
+            return FavoritFilmlsListLabel.Text.Contains("Любимые фильмы");
         }
-        public string GetClass()                 //получить listname
+        public bool IsExistClass()                 //получить listname
         {
-            return favButton.GetAttribute("class");
+            return addFavoriteButton.GetAttribute("class").Contains("fav");
           
         }
         public void PushMark()
         {
-            mark.Click();
+            tenPointButton.Click();
         }
-        public string GetMyMark()                 //получить listname
+        public bool IsMyMarkLableExist()                 //получить listname
         {
-            return myMark.Text;
+            return String.Equals(myMarkLabel.Text, "моя оценка");
         }
-        public string GetAnotherFilmName()                 
+        public bool IsDirectorBestFilmsLabelExist()                 
         {
-            return anoherFilm.Text;
+            return bestDirectorFilmsLabel.Text.Contains("Лучшие фильмы:");
         }
-        public string GetMessageText()
+        public bool IsWarningMessageExist()
         {
-            return message.Text;
+            return warningMessage.Text.Contains("Для голосования");
         }
         public string GetNoticeText()
         {
             return noticeText.Text;
         }
-        public void FillFieldNotice()
+        public void FillFieldNotice(string noticeText)
         {
-            fillNotice.SendKeys("qwerty");
+            textareaForNotice.SendKeys(noticeText);
         }
         public void ClickremoveNotice()
         {
-            removeNotice.Click();
+            removeNoticeButton.Click();
         }
         public void ClickaddNotice()
         {
-            addNotice.Click();
+            addNoticeButton.Click();
         }
         public void ClickSaveNotice()
         {
-            saveNotice.Click();
+            saveNoticeButton.Click();
         }
     }
    

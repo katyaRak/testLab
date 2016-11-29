@@ -8,37 +8,27 @@ using System.Threading.Tasks;
 
 namespace TestFramework.Pages
 {
-    class SearchPage
+    class SearchPage : AbstractPage
     {
         private IWebDriver driver;
 
-        [FindsBy(How = How.XPath, Using = "//a[text()='Том Хэнкс']")]
-        private IWebElement actorName;
-        [FindsBy(How = How.XPath, Using = "//a[text()='Дакота Фаннинг']")]
-        private IWebElement actorNameForExtSerch;
-        [FindsBy(How = How.XPath, Using = "//a[text()='Свет в океане']")]
-        private IWebElement filmName; 
+        [FindsBy(How = How.XPath, Using = "//td[@id='block_left_pad']/div/div[3]/div/div[2]/p/a")]
+        private IWebElement referenceFoInfoPage;
 
-          public SearchPage(IWebDriver driver)                              //конструктор
-        {
-            this.driver = driver;
-            PageFactory.InitElements(this.driver, this);
-        }
-         public void openInfo()
+        public SearchPage(IWebDriver driver) : base(driver) { }                              //конструктор
+       
+         public void OpenInfo()
           {
-              actorName.Click();
+              referenceFoInfoPage.Click();
           }
-         public void openFilmInfo()
-         {
-             filmName.Click();
-         }
+      
          public string GetFilmName()
          {
-             return filmName.Text;
+             return referenceFoInfoPage.Text;
          }
          public string GetactorNameForExtSerch()
          {
-             return actorNameForExtSerch.Text;
+             return referenceFoInfoPage.Text;
          }
     }
 }

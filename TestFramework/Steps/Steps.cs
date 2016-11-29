@@ -15,7 +15,6 @@ namespace TestFramework.Steps
         Pages.MainPage mainPage;
         Pages.InfoPage infoPage;
         Pages.SearchPage searchPage;
-        Pages.MyKinopoisk myKinopoisk;
         Pages.Navigator navigator;
        
 
@@ -33,18 +32,18 @@ namespace TestFramework.Steps
             mainPage = new Pages.MainPage(driver);
             mainPage.LogOut();
         }
-        public bool LogOutTest()
+        public bool IsLogOut()
         {
             mainPage = new Pages.MainPage(driver);
             LogOut();
-            return mainPage.GetEnterText().Contains("сайт");
+            return mainPage.IsEnterButtonExists();
         }
-        public bool Enter(string login, string password)   //войти
+        public bool IsLogin(string login, string password)   //войти
         {
             mainPage = new Pages.MainPage(driver);
             mainPage.OpenPage();
             mainPage.Authorization(login, password);
-            return mainPage.GetLogin().Contains(login);
+            return mainPage.IsLoginLabelExist(login);
         }
 
     
@@ -52,200 +51,164 @@ namespace TestFramework.Steps
         public void Search(string name)
         {
             mainPage = new Pages.MainPage(driver);
-            mainPage.Search(name);
+            mainPage.enterTextToSearch(name);
             searchPage = new Pages.SearchPage(driver);
-            searchPage.openInfo();
+            searchPage.OpenInfo();
             
         }
-       
-        public void AddFavoriteActore()
+
+        public void AddActoreToFavorite()
         {
             infoPage = new Pages.InfoPage(driver);
-           // infoPage.ClickHeart();
-            infoPage.ClickList();
+            infoPage.ClickListButton();
             infoPage.ClickfavButton();
            
         }
-        public void AddFavoriteFil()
+        public void AddFilmToFavorite()
         {
             infoPage = new Pages.InfoPage(driver);
-            infoPage.ClickHeart();
-            
-
-        }
-        public void DelWhenListOpen()
-        {
-            infoPage = new Pages.InfoPage(driver);
-            infoPage.ClickfavButton();
-        }
-        public void DelFavoriteActore()
-        {
-            infoPage = new Pages.InfoPage(driver);
-            infoPage.ClickList();
-            infoPage.ClickfavButton();
-            
-        }
-
-
-        public bool SearchActor(string name)
-        {
-            infoPage = new Pages.InfoPage(driver);
-            Search(name);
-            AddFavoriteActore();
+            infoPage.ClickAddFilmToFavoriteButton();
             Thread.Sleep(5000);
-            infoPage = new Pages.InfoPage(driver);
-            return infoPage.GetListName().Contains("звёзды");
+
         }
-        public bool SearchActorDel(string name)
+        public void DeleteFromFavoritList()
+        {
+            infoPage = new Pages.InfoPage(driver);
+            infoPage.ClickfavButton();
+        }
+        public void DeleteFavoriteActore()
+        {
+            infoPage = new Pages.InfoPage(driver);
+            infoPage.ClickListButton();
+            infoPage.ClickfavButton();
+            
+        }
+
+
+        public bool IsAddActoreToFavorite(string name)
         {
             infoPage = new Pages.InfoPage(driver);
             Search(name);
-            DelFavoriteActore();
-            return infoPage.GetClass().Contains("fav");
+            AddActoreToFavorite();
+            infoPage = new Pages.InfoPage(driver);
+            return infoPage.IsFavoriteStarsListExist();
         }
-        public void SearchFavFilm(string name)
-        {
-            mainPage = new Pages.MainPage(driver);
-            mainPage.Search(name);
-            searchPage = new Pages.SearchPage(driver);
-            searchPage.openFilmInfo();
-
-        }
-        public bool SearchFilmAndPushMark(string name)
+        public bool IsDeleteActorFromFavorite(string name)
         {
             infoPage = new Pages.InfoPage(driver);
-            SearchFavFilm(name);
+            Search(name);
+            DeleteFavoriteActore();
+            return infoPage.IsExistClass();
+        }
+      
+        public bool IsPushMark(string name)
+        {
+            infoPage = new Pages.InfoPage(driver);
+            Search(name);
             infoPage.PushMark();
-            return String.Equals(infoPage.GetMyMark(), "моя оценка");
+            return infoPage.IsMyMarkLableExist();
         }
-        public bool AddFavFilm(string name)
+        public bool IsAddFilmToFavorite(string name)
         {
             infoPage = new Pages.InfoPage(driver);
-            SearchFavFilm(name);
-            AddFavoriteFil();
-            return infoPage.GetFilmListName().Contains("фильмы");
-        }
-        public void OpenFavFilm()
-        {
-            infoPage = new Pages.InfoPage(driver);
-            mainPage = new Pages.MainPage(driver);
-            mainPage.ClickbuttonMyKinopoisk();
-
-
-        }
-        public bool LookDirectorFilm(string name)
-        {
-            infoPage = new Pages.InfoPage(driver);
-            mainPage = new Pages.MainPage(driver);
-            myKinopoisk = new Pages.MyKinopoisk(driver);
-            searchPage = new Pages.SearchPage(driver);
-          //  mainPage.ClickbuttonMyKinopoisk();
-          //  myKinopoisk.ClickFilms();
-        //    myKinopoisk.OpenFilm();
-            mainPage.Search(name);
-            searchPage.openFilmInfo();
-            infoPage.ClickDirector();
-
-            return infoPage.GetAnotherFilmName().Contains("Валентинка");
-        }
-        public bool MarkWithoutAuthorization(string name)
-        {
-            infoPage = new Pages.InfoPage(driver);
-            mainPage = new Pages.MainPage(driver);
-            mainPage.OpenPage();
-            SearchFavFilm(name);
-            infoPage.PushMark();
-            
-
-            return infoPage.GetMessageText().Contains("голосования");
+            Search(name);
+            AddFilmToFavorite();
+            return infoPage.IsFavoriteFilmsListExist();
         }
    
+        public bool IsOpenDirectorInfoPageFromFilmPage(string name)
+        {
+            infoPage = new Pages.InfoPage(driver);
+            Search(name);
+            infoPage.ClickDirector();
+            return infoPage.IsDirectorBestFilmsLabelExist();
+        }
+        public bool IsPutMarkWithoutAuthorization(string name)
+        {
+            
+            mainPage = new Pages.MainPage(driver);
+            mainPage.OpenPage();
+            Search(name);
+            infoPage = new Pages.InfoPage(driver);
+            infoPage.PushMark();
 
-        public bool SearchFilmByNavigate()
+            return infoPage.IsWarningMessageExist();
+        }
+
+
+        public bool IsSearchFilmByExtendedSearch(string wordFromilm, string year)
         {
             mainPage = new Pages.MainPage(driver);
-            mainPage.ClickextendedSearch();
+            mainPage.ClickExtendedSearchButton();
             navigator = new Pages.Navigator(driver);
-            navigator.fillInputFindFilm();
-            navigator.fillInputYear();
-            navigator.ClickSearchBut();
+            navigator.DoExtendedSearchForFilm(wordFromilm, year);
             searchPage = new Pages.SearchPage(driver);
-            return searchPage.GetFilmName().Contains("Свет");
+            return searchPage.GetFilmName().Contains(wordFromilm);
         }
-        public bool SearchActoreByBirth()
+        public bool IsSearchActoreByExtendedSearch(string name, string birth)
         {
             mainPage = new Pages.MainPage(driver);
-            mainPage.ClickextendedSearch();
+            mainPage.ClickExtendedSearchButton();
             navigator = new Pages.Navigator(driver);
-            navigator.fillInputActoreName();
-            navigator.fillInputDateOfBirth();
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
-            var e = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div[@id='searchAdv']/form[3]/input[10]")));
-            navigator.ClicksearchByBirthBtn();
+            navigator.DoExtendedSearchForActor(name, birth);
             searchPage = new Pages.SearchPage(driver);
-            return searchPage.GetactorNameForExtSerch().Contains("Дакота");
+            return searchPage.GetactorNameForExtSerch().Contains(name);
         }
-        public void AddNot()
+        public void AddNoticeOnInfoPage(string noticeText)
         {
             infoPage = new Pages.InfoPage(driver);
             infoPage.ClickaddNotice();
-            infoPage.FillFieldNotice();
+            infoPage.FillFieldNotice(noticeText);
             infoPage.ClickSaveNotice();
         }
-        public void DelNotice()
+        public void DeleteNoticeOnInfoPage()
         {
             infoPage = new Pages.InfoPage(driver);
             infoPage.ClickremoveNotice();
             driver.SwitchTo().Alert().Accept();
         }
-        public bool AddNotice()
+        public bool IsAddNotice(string noticeText)
         {
-            AddNot();
+            AddNoticeOnInfoPage(noticeText);
             Thread.Sleep(4000);
             infoPage = new Pages.InfoPage(driver);
-            return infoPage.GetNoticeText().Contains("qwerty");
+            return infoPage.GetNoticeText().Contains(noticeText);
         }
-        public bool DeleteNotice()
+        public bool IsDeleteNotice()
         {
-            DelNotice();
+            DeleteNoticeOnInfoPage();
 
             Thread.Sleep(4000);
             infoPage = new Pages.InfoPage(driver);
             return infoPage.GetNoticeText() == "";
         }
      
-        public bool CheckSearchLine(string name)
+        public bool IsSearchLine(string name)
         {
             mainPage = new Pages.MainPage(driver);
-            mainPage.Search(name);
+            mainPage.enterTextToSearch(name);
             searchPage = new Pages.SearchPage(driver);
-            return searchPage.GetFilmName().Contains("Свет");
+            return searchPage.GetFilmName().Contains(name);
         }
 
-        public bool CheckSortByName()
+        public bool IsSortByMarkAmount(string actoreName)
         {
             mainPage = new Pages.MainPage(driver);
             mainPage.OpenPage();
-            Search("Том Хэнкс");
+            Search(actoreName);
             infoPage = new Pages.InfoPage(driver);
-            infoPage.ClickSortBtn();
-            infoPage.ClickSortByNameBtn();
-           // infoPage = new Pages.InfoPage(driver);
-            Thread.Sleep(4000);
-            return infoPage.GetTextlabeForChekSort().Contains("Ангелы");
+            infoPage.ClickSortByMarkAmount();
+            return infoPage.IsFirstAmountElementMoreThenSecond();
 
         }
-        public bool CheckSortByMark()
+        public bool IsSortByMark(string actoreName)
         {
             mainPage = new Pages.MainPage(driver);
             mainPage.OpenPage();
-            Search("Том Хэнкс");
+            Search(actoreName);
             infoPage = new Pages.InfoPage(driver);
-            infoPage.ClickSortBtn();
             infoPage.ClickSortByMarkBtn();
-            // infoPage = new Pages.InfoPage(driver);
-            Thread.Sleep(4000);
-            return infoPage.GetTextlabeForChekSort().Contains("Зеленая");
+            return infoPage.IsFirstMarkElementMoreThenSecond();
 
         }
     }

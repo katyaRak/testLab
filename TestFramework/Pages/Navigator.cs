@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,54 +9,44 @@ using System.Threading.Tasks;
 
 namespace TestFramework.Pages
 {
-    class Navigator
+    class Navigator : AbstractPage
     {
         private IWebDriver driver;
         [FindsBy(How = How.XPath, Using = "//input[@id='find_film']")]
-        private IWebElement inputFindFilm;
+        private IWebElement findFilmInput;
+
         [FindsBy(How = How.XPath, Using = "//input[@id='year']")]
-        private IWebElement inputYear;
+        private IWebElement yearInput;
+
         [FindsBy(How = How.XPath, Using = "//input[@id='find_people']")]
-        private IWebElement inputActoreName;
+        private IWebElement actoreNameInput;
+
         [FindsBy(How = How.XPath, Using = "//input[@id='birthday']")]
-        private IWebElement inputDateOfBirth;
+        private IWebElement dateOfBirthInput;
+
         [FindsBy(How = How.XPath, Using = "//form[@id='formSearchMain']/input[11]")]
-        private IWebElement searchBut;
+        private IWebElement searchButton;
+
         [FindsBy(How = How.XPath, Using = "//div[@id='searchAdv']/form[3]/input[10]")]
-        private IWebElement searchByBirthBtn;
+        private IWebElement searchByBirthButton;
 
-        public void fillInputFindFilm()
+        
+        public void DoExtendedSearchForFilm(string wordFromilm, string year)
         {
-            inputFindFilm.SendKeys("свет");
+            findFilmInput.SendKeys(wordFromilm);
+            yearInput.SendKeys(year);
+            searchButton.Click();
         }
-        public void fillInputYear()
+        public void DoExtendedSearchForActor(string name, string birth)
         {
-            inputYear.SendKeys("2016");
-        }
-        public void fillInputActoreName()
-        {
-            inputActoreName.SendKeys("Дакота");
-        }
-        public void fillInputDateOfBirth()
-        {
-            inputDateOfBirth.SendKeys("1994");
-        }
-        public void ClicksearchByBirthBtn()
-        {
-            searchByBirthBtn.Click();
+            actoreNameInput.SendKeys(name); 
+            dateOfBirthInput.SendKeys(birth);
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
+            var e = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//div[@id='searchAdv']/form[3]/input[10]")));
+            searchByBirthButton.Click();
         }
 
-
-        public void ClickSearchBut()
-        {
-            searchBut.Click();
-        }
-
-        public Navigator(IWebDriver driver)
-        {
-            // TODO: Complete member initialization
-            this.driver = driver;
-            PageFactory.InitElements(this.driver, this);
-        }
+        public Navigator(IWebDriver driver) : base(driver) { }
+       
     }
 }

@@ -16,25 +16,21 @@ namespace TestFramework.Pages
       //  private IWebDriver driver;
 
         [FindsBy(How = How.XPath, Using = "//a[text()='Войти на сайт']")]
-        private IWebElement buttonEnter;                     //кнопка Вход
+        private IWebElement loginButton;                     //кнопка Вход
 
         [FindsBy(How = How.Id, Using = "li5top")]
-        private IWebElement reiting;
+        private IWebElement reitingButton;
 
-        [FindsBy(How = How.XPath, Using = "//a[text()='поиск лучших']")]
-        private IWebElement searchBest;  
 
-        [FindsBy(How = How.XPath, Using = "//a[text()='Мой КиноПоиск']")]
-        private IWebElement buttonMyKinopoisk;
         [FindsBy(How = How.XPath, Using = "//a[text()='расширенный поиск']")]
-        private IWebElement extendedSearch; 
+        private IWebElement extendedSearchButton;
 
-        
-        [FindsBy(How = How.XPath, Using = "//a[text()='Профиль: testcase']")]
-        private IWebElement labelLogin;
+
+        [FindsBy(How = How.XPath, Using = "//div[@id='perechenlogin']/a[2]")]
+        private IWebElement loginLabel;
 
         [FindsBy(How = How.XPath, Using = "//a[text()='выйти']")]
-        private IWebElement logOut;
+        private IWebElement logOutButton;
 
         [FindsBy(How = How.Id, Using = "search_input")]
         private IWebElement searchInput;
@@ -43,41 +39,33 @@ namespace TestFramework.Pages
         private IWebElement searchButton;
 
         public MainPage(IWebDriver driver) : base(driver) { }
- /*       public MainPage(IWebDriver driver)                              //конструктор
-        {
-            this.driver = driver;
-            PageFactory.InitElements(this.driver, this);
-        } */
 
-        public void ClickextendedSearch()
+        public void ClickExtendedSearchButton()
         {
-            extendedSearch.Click();
+            extendedSearchButton.Click();
         }
 
         public void OpenPage()                                       //открыть страницу
         {
             driver.Navigate().GoToUrl(BASE_URL);
         }
-        public string GetLogin()                 //получить логин пользователя
+        public bool IsLoginLabelExist(string login)                 //получить логин пользователя
         {
-            return labelLogin.Text;
+            return loginLabel.Text.Contains(login);
         }
-        public string GetEnterText()
+        public bool IsEnterButtonExists()
         {
-            return buttonEnter.Text;
+            return loginButton.Text.Contains("Войти");
         }
          public void LogOut() //выйти из профиля
         {
-            logOut.Click();
+            logOutButton.Click();
         }
-        public void ClickbuttonMyKinopoisk()
-         {
-             buttonMyKinopoisk.Click();
-         }
+      
                
         public void Authorization(string login, string password)
         {
-            buttonEnter.Click();
+            loginButton.Click();
             driver.SwitchTo().Frame("kp2-authapi-iframe").FindElement(By.Name("login")).SendKeys(login);
             driver.FindElement(By.Name("password")).SendKeys(password);
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
@@ -86,22 +74,16 @@ namespace TestFramework.Pages
             driver.SwitchTo().DefaultContent();
         }
 
-        public void Search( string name)
+        public void enterTextToSearch( string name)
         {
             searchInput.SendKeys(name);
             searchButton.Click();
         }
-       public void ClickLabelLogin()
-        {
-            labelLogin.Click();
-        }
+      
        public void ClickLabelReiting()
        {
-           reiting.Click();
+           reitingButton.Click();
        }
-       public void ClickLSearchBestInRaiting()
-       {
-          searchBest.Click();
-       }
+      
     }
 }

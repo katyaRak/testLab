@@ -15,6 +15,10 @@ namespace TestFramework
     public class SmokeTests
     {
         private Steps.Steps steps = new Steps.Steps();
+        public string login = "testcase";
+        public string password = "Testcase2016";
+        public string filmName = "Свет в океане";
+        public string actorName = "Том Хэнкс";
 
         [SetUp]
         public void Init()                      //открыть браузер
@@ -31,40 +35,40 @@ namespace TestFramework
             [Test]
                 public void authorization()                                  
                 {
-                    Assert.IsTrue(steps.Enter("testcase", "Testcase2016")); //ok
+                    Assert.IsTrue(steps.IsLogin(login, password)); //ok
                     steps.LogOut();
                 }  
          [Test]
-                 public void search()                                  //ok
+            public void addActorToFavoriteActorList()                                  //ok
                  {
-                     steps.Enter("testcase", "Testcase2016");
-                     Assert.IsTrue(steps.SearchActor("Том Хэнкс"));
-                     steps.DelWhenListOpen();
+                     steps.IsLogin(login, password);
+                     Assert.IsTrue(steps.IsAddActoreToFavorite(actorName));
+                     steps.DeleteFromFavoritList();
                      steps.LogOut();
                  } 
 
             [Test]
-                    public void searchDelete()                        //ok          
+            public void deleteActorFromFavoriteActorList()                        //ok          
                     {
-                       steps.Enter("testcase", "Testcase2016");
-                       Assert.IsTrue(steps.SearchActorDel("Том Хэнкс"));
+                        steps.IsLogin(login, password);
+                        Assert.IsTrue(steps.IsDeleteActorFromFavorite(actorName));
                        steps.LogOut();
                     } 
        
 
                    [Test]
-                   public void searchFilm()                    //ok             
+                   public void putFilmMark()                    //ok             
                    {
-                       steps.Enter("testcase", "Testcase2016");
-                       Assert.IsTrue(steps.SearchFilmAndPushMark("Свет в океане"));
+                       steps.IsLogin(login, password);
+                       Assert.IsTrue(steps.IsPushMark(filmName));
                        steps.LogOut();
                    } 
          
                    [Test]
-                   public void AddFavFilm()                   //ok               
+                   public void addMovieToFavourites()                   //ok               
                    {
-                       steps.Enter("testcase", "Testcase2016");
-                       Assert.IsTrue(steps.AddFavFilm("Свет в океане"));
+                       steps.IsLogin(login, password);
+                       Assert.IsTrue(steps.IsAddFilmToFavorite(filmName));
                        steps.LogOut();
                    } 
 
@@ -72,41 +76,41 @@ namespace TestFramework
            [Test]
            public void LookDirectorFilm()                    //ok              
            {
-               steps.Enter("testcase", "Testcase2016");
-               Assert.IsTrue(steps.LookDirectorFilm("Свет в океане"));
+               steps.IsLogin(login, password);
+               Assert.IsTrue(steps.IsOpenDirectorInfoPageFromFilmPage(filmName));
                steps.LogOut();
            } 
         
 
            [Test]
-           public void MarkWithoutAuthorization()                  //ok                
+           public void PutFilmMarkWithoutAuthorization()                  //ok                
            {
-        
-               Assert.IsTrue(steps.MarkWithoutAuthorization("Свет в океане"));
+
+               Assert.IsTrue(steps.IsPutMarkWithoutAuthorization(filmName));
          
            } 
         
 
           
                [Test]
-                 public void CheckOut()                           //ok
+                 public void CheckLogout()                           //ok
               {
-                  steps.Enter("testcase", "Testcase2016");
-                  Assert.IsTrue(steps.LogOutTest());
+                  steps.IsLogin(login, password);
+                  Assert.IsTrue(steps.IsLogOut());
               
               } 
         [Test]      
              public void NavigateSearch()                           //okkkk
           {
-              steps.Enter("testcase", "Testcase2016");   
-              Assert.IsTrue(steps.SearchFilmByNavigate());
+              steps.IsLogin(login, password);   
+              Assert.IsTrue(steps.IsSearchFilmByExtendedSearch("свет", "2016"));
               steps.LogOut();
           }
            [Test]
              public void SearchActoreByBirthTest()                           //okkkk
              {
-                 steps.Enter("testcase", "Testcase2016");
-                 Assert.IsTrue(steps.SearchActoreByBirth());
+                 steps.IsLogin(login, password);
+                 Assert.IsTrue(steps.IsSearchActoreByExtendedSearch("Дакота", "1994"));
                  steps.LogOut();
              } 
 
@@ -114,20 +118,20 @@ namespace TestFramework
 
                   public void AddNotice()     //ok
                   {
-                      steps.Enter("testcase", "Testcase2016");
-                      steps.SearchFavFilm("Свет в океане");
-                      Assert.IsTrue(steps.AddNotice());
-                      steps.DelNotice();
+                      steps.IsLogin(login, password);
+                      steps.Search(filmName);
+                      Assert.IsTrue(steps.IsAddNotice("qwerty"));
+                      steps.DeleteNoticeOnInfoPage();
                       steps.LogOut();
 
                   } 
            [Test]
           public void RemoveNotice()    //ok
           {
-              steps.Enter("testcase", "Testcase2016");
-              steps.SearchFavFilm("Свет в океане");
-              steps.AddNotice();
-              Assert.IsTrue(steps.DeleteNotice());
+              steps.IsLogin(login, password);
+              steps.Search(filmName);
+              steps.IsAddNotice("qwerty");
+              Assert.IsTrue(steps.IsDeleteNotice());
               steps.LogOut();
 
           }
@@ -136,16 +140,16 @@ namespace TestFramework
      [Test]
         public void CheckSearchLineTest()         //ok
         {
-            steps.Enter("testcase", "Testcase2016");
-            Assert.IsTrue(steps.CheckSearchLine("Свет в океане"));
+            steps.IsLogin(login, password);
+            Assert.IsTrue(steps.IsSearchLine(filmName));
             steps.LogOut();
 
         } 
       [Test]
         public void CheckSortByNameTest()        //ok
         {
-       
-            Assert.IsTrue(steps.CheckSortByName());
+
+            Assert.IsTrue(steps.IsSortByMarkAmount(actorName));
            
 
         } 
@@ -153,7 +157,7 @@ namespace TestFramework
         public void CheckSortByMarkTest()        //ok
         {
 
-            Assert.IsTrue(steps.CheckSortByMark());
+            Assert.IsTrue(steps.IsSortByMark(actorName));
 
 
         }
